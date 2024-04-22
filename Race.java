@@ -93,6 +93,10 @@ public class Race
             {
                 finished = true;
             }
+            if(raceWonBy(lane1Horse) && raceWonBy(lane2Horse) || raceWonBy(lane1Horse) && raceWonBy(lane3Horse) || raceWonBy(lane2Horse) && raceWonBy(lane3Horse)){
+                System.out.println("There is a tie");
+                break;
+            }
             if(finished){
                 if(raceWonBy(lane1Horse)){
                     System.out.println("And the winner is " + lane1Horse.getName());
@@ -116,19 +120,19 @@ public class Race
                 finished = true;
                 System.out.println("All horses have fallen, no winner");
             }
-        }
-        System.out.println("Do you want race again? (y/n)");
-        raceAgain = input.nextLine();
-        while (!(raceAgain.equals("y") || raceAgain.equals("n"))){
-            System.out.println("Please enter y or n");
-            raceAgain = input.nextLine();
-        }
-        if(raceAgain.equals("n")){
-            input.close();
-        }
-    }
-    }
     
+        }
+            System.out.println("Do you want race again? (y/n)");
+            raceAgain = input.nextLine();
+            while (!(raceAgain.equals("y") || raceAgain.equals("n"))){
+                System.out.println("Please enter y or n");
+                raceAgain = input.nextLine();
+            }
+            if(raceAgain.equals("n")){
+                input.close();
+            }
+        }
+    }
     /**
      * Randomly make a horse move forward or fall depending
      * on its confidence rating
@@ -152,7 +156,7 @@ public class Race
             //the probability that the horse will fall is very small (max is 0.1)
             //but will also will depends exponentially on confidence 
             //so if you double the confidence, the probability that it will fall is *2
-            if (Math.random() < (0.1*theHorse.getConfidence()*theHorse.getConfidence()))
+            if (Math.random() < (0.1*theHorse.getConfidence()*theHorse.getConfidence()) && raceWonBy(theHorse)==false)
             {
                 theHorse.fall();
                 if(theHorse.getConfidence()>0.0){
@@ -172,7 +176,7 @@ public class Race
      */
     private boolean raceWonBy(Horse theHorse)
     {
-        if (theHorse.getDistanceTravelled() == raceLength)
+        if (theHorse.getDistanceTravelled() == raceLength && theHorse.hasFallen()==false)
         {
             return true;
         }
@@ -188,7 +192,6 @@ public class Race
     private void printRace()
     {
         System.out.print("\033[H\033[2J");  //clear the terminal window
-        
         multiplePrint('=',raceLength+3); //top edge of track
         System.out.println();
         

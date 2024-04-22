@@ -68,10 +68,10 @@ public class Horse
 
     public void setConfidence(double newConfidence)
     {
-        if(this.getConfidence()>1.0){
+        if(newConfidence>1.0){
             newConfidence = 1.0;
         }
-        else if(this.getConfidence()<0.0){
+        else if(newConfidence<0.1){
             newConfidence = 0.1;
         }
         newConfidence = Math.round(newConfidence * 100.0) / 100.0;

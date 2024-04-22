@@ -1,7 +1,7 @@
 public class Main
 {
     public static void main(String[] args){
-        Race race = new Race(10);
+        Race race = new Race(6);
         Horse horse1 = new Horse('J', "John", 0.5);
         Horse horse2 = new Horse('R', "Rafs", 0.5);
         Horse horse3 = new Horse('Z', "Zans", 0.5);
