@@ -53,6 +53,7 @@ public class Horse
     public void goBackToStart()
     {
         this.distanceTravelled = 0;
+        this.hasFallen = false;
     }
     
     public boolean hasFallen()
@@ -67,17 +68,19 @@ public class Horse
 
     public void setConfidence(double newConfidence)
     {
+        if(this.getConfidence()>1.0){
+            newConfidence = 1.0;
+        }
+        else if(this.getConfidence()<0.0){
+            newConfidence = 0.1;
+        }
+        newConfidence = Math.round(newConfidence * 100.0) / 100.0;
         this.horseConfidence = newConfidence;
     }
     
     public void setSymbol(char newSymbol)
     {
         this.horseSymbol = newSymbol;
-    }
-    //Resets the horse's fallen status to false
-    public void setNotFallen()
-    {
-        this.hasFallen = false;
     }
     
 }

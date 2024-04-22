@@ -74,11 +74,8 @@ public class Race
         
         //reset all the lanes (all horses not fallen and back to 0). 
         lane1Horse.goBackToStart();
-        lane1Horse.setNotFallen();
         lane2Horse.goBackToStart();
-        lane2Horse.setNotFallen();
         lane3Horse.goBackToStart();
-        lane3Horse.setNotFallen();
         
                       
         while (!finished)
@@ -99,10 +96,13 @@ public class Race
             if(finished){
                 if(raceWonBy(lane1Horse)){
                     System.out.println("And the winner is " + lane1Horse.getName());
+                    lane1Horse.setConfidence(lane1Horse.getConfidence()+0.1);
                 }else if(raceWonBy(lane2Horse)){
                     System.out.println("And the winner is " + lane2Horse.getName());
+                    lane2Horse.setConfidence(lane2Horse.getConfidence()+0.1);
                 }else if(raceWonBy(lane3Horse)){
                     System.out.println("And the winner is " + lane3Horse.getName());
+                    lane3Horse.setConfidence(lane3Horse.getConfidence()+0.1);
                 }else{
                     System.out.println("No winner");
                 }
@@ -111,6 +111,7 @@ public class Race
             try{ 
                 TimeUnit.MILLISECONDS.sleep(100);
             }catch(Exception e){}
+            
             if (lane1Horse.hasFallen() && lane2Horse.hasFallen() && lane3Horse.hasFallen()){
                 finished = true;
                 System.out.println("All horses have fallen, no winner");
@@ -118,6 +119,10 @@ public class Race
         }
         System.out.println("Do you want race again? (y/n)");
         raceAgain = input.nextLine();
+        while (!(raceAgain.equals("y") || raceAgain.equals("n"))){
+            System.out.println("Please enter y or n");
+            raceAgain = input.nextLine();
+        }
         if(raceAgain.equals("n")){
             input.close();
         }
@@ -150,6 +155,11 @@ public class Race
             if (Math.random() < (0.1*theHorse.getConfidence()*theHorse.getConfidence()))
             {
                 theHorse.fall();
+                if(theHorse.getConfidence()>0.0){
+                    theHorse.setConfidence(theHorse.getConfidence()-0.1);
+                }else{
+                    theHorse.setConfidence(0.1);
+                }
             }
         }
     }
