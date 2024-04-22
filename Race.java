@@ -1,5 +1,6 @@
 import java.util.concurrent.TimeUnit;
 import java.lang.Math;
+import java.util.Scanner;
 
 /**
  * A three-horse race, each horse running in its own lane
@@ -65,13 +66,20 @@ public class Race
      */
     public void startRace()
     {
+        String raceAgain = "y";
+        Scanner input = new Scanner(System.in);
+        while(raceAgain.equals("y")){
         //declare a local variable to tell us when the race is finished
         boolean finished = false;
         
         //reset all the lanes (all horses not fallen and back to 0). 
         lane1Horse.goBackToStart();
+        lane1Horse.setNotFallen();
         lane2Horse.goBackToStart();
+        lane2Horse.setNotFallen();
         lane3Horse.goBackToStart();
+        lane3Horse.setNotFallen();
+        
                       
         while (!finished)
         {
@@ -103,7 +111,17 @@ public class Race
             try{ 
                 TimeUnit.MILLISECONDS.sleep(100);
             }catch(Exception e){}
+            if (lane1Horse.hasFallen() && lane2Horse.hasFallen() && lane3Horse.hasFallen()){
+                finished = true;
+                System.out.println("All horses have fallen, no winner");
+            }
         }
+        System.out.println("Do you want race again? (y/n)");
+        raceAgain = input.nextLine();
+        if(raceAgain.equals("n")){
+            input.close();
+        }
+    }
     }
     
     /**

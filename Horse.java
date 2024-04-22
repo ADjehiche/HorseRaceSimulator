@@ -74,5 +74,10 @@ public class Horse
     {
         this.horseSymbol = newSymbol;
     }
+    //Resets the horse's fallen status to false
+    public void setNotFallen()
+    {
+        this.hasFallen = false;
+    }
     
 }
