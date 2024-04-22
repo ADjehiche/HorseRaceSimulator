@@ -5,7 +5,7 @@
  * The class also includes methods to make the horse fall, move forward, go back to the start, set the horse's confidence and symbol.
  * 
  * @author (Acil Djehiche) 
- * @version (Version 1 - 15/03/2024)
+ * @version (Version 2 - 22/04/2024)
  */
 public class Horse
 {
