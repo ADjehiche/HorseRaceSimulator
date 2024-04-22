@@ -29,7 +29,8 @@ public class Race
         lane2Horse = null;
         lane3Horse = null;
     }
-    
+
+
     /**
      * Adds a horse to the race in a given lane
      * 
@@ -87,7 +88,17 @@ public class Race
             {
                 finished = true;
             }
-           
+            if(finished){
+                if(raceWonBy(lane1Horse)){
+                    System.out.println("And the winner is " + lane1Horse.getName());
+                }else if(raceWonBy(lane2Horse)){
+                    System.out.println("And the winner is " + lane2Horse.getName());
+                }else if(raceWonBy(lane3Horse)){
+                    System.out.println("And the winner is " + lane3Horse.getName());
+                }else{
+                    System.out.println("No winner");
+                }
+            }
             //wait for 100 milliseconds
             try{ 
                 TimeUnit.MILLISECONDS.sleep(100);
@@ -148,7 +159,7 @@ public class Race
      */
     private void printRace()
     {
-        System.out.print('\u000C');  //clear the terminal window
+        System.out.print("\033[H\033[2J");  //clear the terminal window
         
         multiplePrint('=',raceLength+3); //top edge of track
         System.out.println();
@@ -189,7 +200,7 @@ public class Race
         //else print the horse's symbol
         if(theHorse.hasFallen())
         {
-            System.out.print('\u2322');
+            System.out.print('X');
         }
         else
         {
@@ -200,7 +211,7 @@ public class Race
         multiplePrint(' ',spacesAfter);
         
         //print the | for the end of the track
-        System.out.print('|');
+        System.out.print("| " + theHorse.getName() + " (Current Confidence:"+ theHorse.getConfidence() + ")");
     }
         
     
