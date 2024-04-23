@@ -1,5 +1,6 @@
 import java.util.concurrent.TimeUnit;
 import java.lang.Math;
+import java.util.Scanner;
 
 /**
  * A three-horse race, each horse running in its own lane
@@ -29,7 +30,8 @@ public class Race
         lane2Horse = null;
         lane3Horse = null;
     }
-    
+
+
     /**
      * Adds a horse to the race in a given lane
      * 
@@ -64,6 +66,9 @@ public class Race
      */
     public void startRace()
     {
+        String raceAgain = "y";
+        Scanner input = new Scanner(System.in);
+        while(raceAgain.equals("y")){
         //declare a local variable to tell us when the race is finished
         boolean finished = false;
         
@@ -71,6 +76,7 @@ public class Race
         lane1Horse.goBackToStart();
         lane2Horse.goBackToStart();
         lane3Horse.goBackToStart();
+        
                       
         while (!finished)
         {
@@ -87,14 +93,46 @@ public class Race
             {
                 finished = true;
             }
-           
+            if(raceWonBy(lane1Horse) && raceWonBy(lane2Horse) || raceWonBy(lane1Horse) && raceWonBy(lane3Horse) || raceWonBy(lane2Horse) && raceWonBy(lane3Horse)){
+                System.out.println("There is a tie");
+                break;
+            }
+            if(finished){
+                if(raceWonBy(lane1Horse)){
+                    System.out.println("And the winner is " + lane1Horse.getName());
+                    lane1Horse.setConfidence(lane1Horse.getConfidence()+0.1);
+                }else if(raceWonBy(lane2Horse)){
+                    System.out.println("And the winner is " + lane2Horse.getName());
+                    lane2Horse.setConfidence(lane2Horse.getConfidence()+0.1);
+                }else if(raceWonBy(lane3Horse)){
+                    System.out.println("And the winner is " + lane3Horse.getName());
+                    lane3Horse.setConfidence(lane3Horse.getConfidence()+0.1);
+                }else{
+                    System.out.println("No winner");
+                }
+            }
             //wait for 100 milliseconds
             try{ 
                 TimeUnit.MILLISECONDS.sleep(100);
             }catch(Exception e){}
+            
+            if (lane1Horse.hasFallen() && lane2Horse.hasFallen() && lane3Horse.hasFallen()){
+                finished = true;
+                System.out.println("All horses have fallen, no winner");
+            }
+    
+        }
+            System.out.println("Do you want race again? (y/n)");
+            raceAgain = input.nextLine();
+            while (!(raceAgain.equals("y") || raceAgain.equals("n"))){
+                System.out.println("Please enter y or n");
+                raceAgain = input.nextLine();
+            }
+            if(raceAgain.equals("n")){
+                input.close();
+            }
         }
     }
-    
     /**
      * Randomly make a horse move forward or fall depending
      * on its confidence rating
@@ -118,9 +156,14 @@ public class Race
             //the probability that the horse will fall is very small (max is 0.1)
             //but will also will depends exponentially on confidence 
             //so if you double the confidence, the probability that it will fall is *2
-            if (Math.random() < (0.1*theHorse.getConfidence()*theHorse.getConfidence()))
+            if (Math.random() < (0.1*theHorse.getConfidence()*theHorse.getConfidence()) && raceWonBy(theHorse)==false)
             {
                 theHorse.fall();
+                if(theHorse.getConfidence()>0.0){
+                    theHorse.setConfidence(theHorse.getConfidence()-0.1);
+                }else{
+                    theHorse.setConfidence(0.1);
+                }
             }
         }
     }
@@ -133,7 +176,7 @@ public class Race
      */
     private boolean raceWonBy(Horse theHorse)
     {
-        if (theHorse.getDistanceTravelled() == raceLength)
+        if (theHorse.getDistanceTravelled() == raceLength && theHorse.hasFallen()==false)
         {
             return true;
         }
@@ -148,8 +191,7 @@ public class Race
      */
     private void printRace()
     {
-        System.out.print('\u000C');  //clear the terminal window
-        
+        System.out.print("\033[H\033[2J");  //clear the terminal window
         multiplePrint('=',raceLength+3); //top edge of track
         System.out.println();
         
@@ -189,7 +231,7 @@ public class Race
         //else print the horse's symbol
         if(theHorse.hasFallen())
         {
-            System.out.print('\u2322');
+            System.out.print('X');
         }
         else
         {
@@ -200,7 +242,7 @@ public class Race
         multiplePrint(' ',spacesAfter);
         
         //print the | for the end of the track
-        System.out.print('|');
+        System.out.print("| " + theHorse.getName() + " (Current Confidence:"+ theHorse.getConfidence() + ")");
     }
         
     
