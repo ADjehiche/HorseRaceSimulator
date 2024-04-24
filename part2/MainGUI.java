@@ -57,7 +57,6 @@ class HorsePanel extends JPanel implements ActionListener {
     private ImageIcon[] imageArray;
     private Image background;
     private Image backgroundWithSun;
-    private Image fallenHorse;
     Timer timer;
     private int delay = 175, totalFrames = 5, currentFrame = 0;
     int xVelocity = 4;
@@ -73,8 +72,7 @@ class HorsePanel extends JPanel implements ActionListener {
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         background = new ImageIcon("background.png").getImage();
         backgroundWithSun = new ImageIcon("backgroundWithSun.png").getImage();
-        fallenHorse = new ImageIcon("frameFallen.png").getImage();
-        imageArray = new ImageIcon[totalFrames];
+        imageArray = new ImageIcon[6];
         for (int i = 0; i < imageArray.length; i++) {
             imageArray[i] = new ImageIcon("frame" + i + ".png");
         }
@@ -97,10 +95,10 @@ class HorsePanel extends JPanel implements ActionListener {
         }else{
         g.drawImage(background, 0, this.y, this.getWidth(), this.getHeight(), this);
         }
-        if (imageArray[currentFrame] != null) {
+        if (imageArray[currentFrame] != null || currentFrame != 5) {
             imageArray[currentFrame].paintIcon(this, g, x, 0);
         }else if(theHorse.hasFallen){
-           g.drawImage(fallenHorse, x, this.y, null);
+           imageArray[5].paintIcon(this, g, x, 0);
         }
     }
     public void moveHorse()
@@ -127,13 +125,18 @@ class HorsePanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(theHorse.hasFallen()==false){
         moveHorse();
         x = x + theHorse.getDistanceTravelled();
+        }
         if (x >= PANEL_WIDTH - imageArray[0].getIconWidth()) {
             x = 0;
             currentFrame = 4;
             stopAnimation();
-        } else {
+        }else if(theHorse.hasFallen()){
+            currentFrame = 5;
+            stopAnimation();
+            }else {
             currentFrame = (currentFrame + 1) % totalFrames;
         }
         repaint();
