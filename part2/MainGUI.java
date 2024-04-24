@@ -81,6 +81,8 @@ class HorsePanel extends JPanel implements ActionListener {
 
     public void startAnimation() {
         timer.start();
+        this.theHorse.goBackToStart();
+        x =0;
     }
 
     public void stopAnimation() {
