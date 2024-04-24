@@ -91,6 +91,9 @@ class HorsePanel extends JPanel implements ActionListener {
         loadImages(newStyle);
         repaint();
     }
+    public Horse getHorse() {
+        return theHorse;
+    }
     public Race getRace(){
         return this.race;
     }
@@ -182,12 +185,26 @@ class settingsPanel extends JPanel {
     private ButtonGroup lengthGroup;
     private JButton startButton;
     private JComboBox<String> horse1Breed, horse2Breed, horse3Breed;
+    private JLabel horse1Stats, horse2Stats, horse3Stats;
     
     public settingsPanel(HorsePanel... horses) {
         this.setPreferredSize(new Dimension(1600, 200));
-        this.setLayout(new FlowLayout(3, 1, 1));
         startButton = new JButton("Start");
         String[] breeds = {"Palomino", "Arabian", "Grullo"};
+        this.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        horse1Stats = new JLabel();
+        horse2Stats = new JLabel();
+        horse3Stats = new JLabel();
+
+        updateHorseStats(horses);
+
+        addComponent(horse1Stats, gbc);
+        addComponent(horse2Stats, gbc);
+        addComponent(horse3Stats, gbc);
 
         horse1Breed = new JComboBox<>(breeds);
         horse2Breed = new JComboBox<>(breeds);
@@ -223,6 +240,7 @@ class settingsPanel extends JPanel {
             horses[1].changeHorseStyle((String)horse2Breed.getSelectedItem());
             horses[2].changeHorseStyle((String)horse3Breed.getSelectedItem());
             int selectedLength = getSelectedTrackLength();
+            updateHorseStats(horses);
             for (HorsePanel horsePanel : horses) {
                 horsePanel.getRace().setRaceLength(selectedLength);
                 horsePanel.setPanelWidth(selectedLength);
@@ -239,4 +257,13 @@ class settingsPanel extends JPanel {
             return 1600;
         }
     }
+    private void updateHorseStats(HorsePanel... horses) {
+        horse1Stats.setText("Horse 1 - " + horses[0].getHorse().getName() + "Confidence: " + String.format("%.2f", horses[0].getHorse().getConfidence()));
+        horse2Stats.setText("Horse 2 - " + horses[1].getHorse().getName() + "Confidence: " + String.format("%.2f", horses[1].getHorse().getConfidence()));
+        horse3Stats.setText("Horse 3 - " + horses[2].getHorse().getName() + "Confidence: " + String.format("%.2f", horses[2].getHorse().getConfidence()));
+    }
+    private void addComponent(Component component, GridBagConstraints gbc) {
+        this.add(component, gbc);
+    }
 }
+    
