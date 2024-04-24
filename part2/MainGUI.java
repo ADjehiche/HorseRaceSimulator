@@ -13,6 +13,7 @@ public class MainGUI
     HorsePanel panel;
     HorsePanel panel2;
     HorsePanel panel3;
+    boolean finished = false;
     settingsPanel controlPanel;
 
     public MyFrame() {
@@ -29,10 +30,6 @@ public class MainGUI
         race.addHorse(horse2, 2);
         race.addHorse(horse3, 3);
 
-        horse1.goBackToStart();
-        horse2.goBackToStart();
-        horse3.goBackToStart();
-
         controlPanel = new settingsPanel(panel, panel2, panel3);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,6 +44,11 @@ public class MainGUI
 
         pack();
         setVisible(true);
+
+        horse1.goBackToStart();
+        horse2.goBackToStart();
+        horse3.goBackToStart();
+
     }
 }
 class HorsePanel extends JPanel implements ActionListener {
@@ -55,6 +57,7 @@ class HorsePanel extends JPanel implements ActionListener {
     private ImageIcon[] imageArray;
     private Image background;
     private Image backgroundWithSun;
+    private Image fallenHorse;
     Timer timer;
     private int delay = 175, totalFrames = 5, currentFrame = 0;
     int xVelocity = 4;
@@ -70,6 +73,7 @@ class HorsePanel extends JPanel implements ActionListener {
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         background = new ImageIcon("background.png").getImage();
         backgroundWithSun = new ImageIcon("backgroundWithSun.png").getImage();
+        fallenHorse = new ImageIcon("frameFallen.png").getImage();
         imageArray = new ImageIcon[totalFrames];
         for (int i = 0; i < imageArray.length; i++) {
             imageArray[i] = new ImageIcon("frame" + i + ".png");
@@ -95,9 +99,11 @@ class HorsePanel extends JPanel implements ActionListener {
         }
         if (imageArray[currentFrame] != null) {
             imageArray[currentFrame].paintIcon(this, g, x, 0);
+        }else if(theHorse.hasFallen){
+           g.drawImage(fallenHorse, x, this.y, null);
         }
     }
-    private void moveHorse()
+    public void moveHorse()
     {
         
         if  (!theHorse.hasFallen())
