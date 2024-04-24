@@ -89,6 +89,13 @@ class HorsePanel extends JPanel implements ActionListener {
     public void setPanelWidth(int width) {
         this.PANEL_WIDTH = width;
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+        background = new ImageIcon("background" +width+".png").getImage();
+        backgroundWithSun = new ImageIcon("backgroundWithSun" +width+".png").getImage();
+        if(horseLane == 1){
+            getGraphics().drawImage(backgroundWithSun, 0, getY(), this.getWidth(), this.getHeight(), this);
+        }else{
+        getGraphics().drawImage(background, 0, getY(), this.getWidth(), this.getHeight(), this);
+        }
         this.revalidate();
     }
     
