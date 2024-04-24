@@ -80,11 +80,12 @@ class HorsePanel extends JPanel implements ActionListener {
         timer = new Timer(delay, this);
     }
     private void loadImages(String breed) {
-        imageArray = new ImageIcon[6];
+        imageArray = new ImageIcon[7];
         for (int i = 0; i < imageArray.length - 1; i++) {
             imageArray[i] = new ImageIcon(breed + i + ".png");
         }
         imageArray[5] = new ImageIcon(breed + "Fallen.png");
+        imageArray[6] = new ImageIcon(breed + "Winner.png");
     }
     public void changeHorseStyle(String newStyle) {
         this.breed = newStyle;
@@ -174,10 +175,10 @@ class HorsePanel extends JPanel implements ActionListener {
         }
         if (x >= PANEL_WIDTH - imageArray[0].getIconWidth()) {
             getHorse().setConfidence(getHorse().getConfidence() + 0.1);
-            currentFrame = 4;
+            currentFrame = 6;
             stopAnimation();
             race.RaceFinished(true);
-            JOptionPane.showMessageDialog(this, "Horse " + getHorse().getName() + " is the winner");
+            JOptionPane.showMessageDialog(this, getHorse().getName() + " is the winner");
         }else if(theHorse.hasFallen()){
             currentFrame = 5;
             stopAnimation();
@@ -267,9 +268,9 @@ class controlPanel extends JPanel {
         }
     }
     private void updateHorseStats(HorsePanel... horses) {
-        horse1Stats.setText("Horse 1 - " + horses[0].getHorse().getName() + " Confidence: " + horses[0].getHorse().getConfidence());
-        horse2Stats.setText("Horse 2 - " + horses[1].getHorse().getName() + " Confidence: " + horses[1].getHorse().getConfidence());
-        horse3Stats.setText("Horse 3 - " + horses[2].getHorse().getName() + " Confidence: " + horses[2].getHorse().getConfidence());
+        horse1Stats.setText(horses[0].getHorse().getName() + " Confidence: " + horses[0].getHorse().getConfidence());
+        horse2Stats.setText(horses[1].getHorse().getName() + " Confidence: " + horses[1].getHorse().getConfidence());
+        horse3Stats.setText(horses[2].getHorse().getName() + " Confidence: " + horses[2].getHorse().getConfidence());
     }
     private void addComponent(Component component, GridBagConstraints gbc) {
         this.add(component, gbc);
