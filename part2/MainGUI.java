@@ -14,7 +14,7 @@ public class MainGUI
     HorsePanel panel2;
     HorsePanel panel3;
     boolean finished = false;
-    settingsPanel controlPanel;
+    controlPanel controlPanel;
 
     public MyFrame() {
         Race race = new Race(15);
@@ -22,15 +22,15 @@ public class MainGUI
         Horse horse2 = new Horse('2', "Rafs", 0.5);
         Horse horse3 = new Horse('3', "Zans", 0.5);
         
-        panel = new HorsePanel(1,1, horse1, race, "white");
-        panel2 = new HorsePanel(1,2, horse2, race, "brown");
-        panel3 = new HorsePanel(1,3, horse3, race , "brown");
+        panel = new HorsePanel(1,1, horse1, race, "Pollimino");
+        panel2 = new HorsePanel(1,2, horse2, race, "Arabian");
+        panel3 = new HorsePanel(1,3, horse3, race , "Grullo");
 
         race.addHorse(horse1, 1);
         race.addHorse(horse2, 2);
         race.addHorse(horse3, 3);
 
-        controlPanel = new settingsPanel(panel, panel2, panel3);
+        controlPanel = new controlPanel(panel, panel2, panel3);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -161,14 +161,21 @@ class HorsePanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        race.RaceFinished(false);
         if(theHorse.hasFallen()==false){
         moveHorse();
         x = x + theHorse.getDistanceTravelled();
         }
+        if(race.isFinished()){
+            stopAnimation();
+            currentFrame = 4;
+        }
         if (x >= PANEL_WIDTH - imageArray[0].getIconWidth()) {
-            x = 0;
+            getHorse().setConfidence(getHorse().getConfidence() + 0.1);
             currentFrame = 4;
             stopAnimation();
+            race.RaceFinished(true);
+            JOptionPane.showMessageDialog(this, "Horse " + getHorse().getName() + " is the winner");
         }else if(theHorse.hasFallen()){
             currentFrame = 5;
             stopAnimation();
@@ -180,14 +187,14 @@ class HorsePanel extends JPanel implements ActionListener {
 }
 
 
-class settingsPanel extends JPanel {
+class controlPanel extends JPanel {
     private JRadioButton length1000, length1300, length1600;
     private ButtonGroup lengthGroup;
     private JButton startButton;
     private JComboBox<String> horse1Breed, horse2Breed, horse3Breed;
     private JLabel horse1Stats, horse2Stats, horse3Stats;
     
-    public settingsPanel(HorsePanel... horses) {
+    public controlPanel(HorsePanel... horses) {
         this.setPreferredSize(new Dimension(1600, 200));
         startButton = new JButton("Start");
         String[] breeds = {"Palomino", "Arabian", "Grullo"};
@@ -258,9 +265,9 @@ class settingsPanel extends JPanel {
         }
     }
     private void updateHorseStats(HorsePanel... horses) {
-        horse1Stats.setText("Horse 1 - " + horses[0].getHorse().getName() + "Confidence: " + String.format("%.2f", horses[0].getHorse().getConfidence()));
-        horse2Stats.setText("Horse 2 - " + horses[1].getHorse().getName() + "Confidence: " + String.format("%.2f", horses[1].getHorse().getConfidence()));
-        horse3Stats.setText("Horse 3 - " + horses[2].getHorse().getName() + "Confidence: " + String.format("%.2f", horses[2].getHorse().getConfidence()));
+        horse1Stats.setText("Horse 1 - " + horses[0].getHorse().getName() + " Confidence: " + horses[0].getHorse().getConfidence());
+        horse2Stats.setText("Horse 2 - " + horses[1].getHorse().getName() + " Confidence: " + horses[1].getHorse().getConfidence());
+        horse3Stats.setText("Horse 3 - " + horses[2].getHorse().getName() + " Confidence: " + horses[2].getHorse().getConfidence());
     }
     private void addComponent(Component component, GridBagConstraints gbc) {
         this.add(component, gbc);
