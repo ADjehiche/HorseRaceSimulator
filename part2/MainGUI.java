@@ -22,9 +22,9 @@ public class MainGUI
         Horse horse2 = new Horse('2', "Rafs", 0.5);
         Horse horse3 = new Horse('3', "Zans", 0.5);
         
-        panel = new HorsePanel(1,1, horse1, race);
-        panel2 = new HorsePanel(1,2, horse2, race);
-        panel3 = new HorsePanel(1,3, horse3, race);
+        panel = new HorsePanel(1,1, horse1, race, "white");
+        panel2 = new HorsePanel(1,2, horse2, race, "brown");
+        panel3 = new HorsePanel(1,3, horse3, race , "brown");
 
         race.addHorse(horse1, 1);
         race.addHorse(horse2, 2);
@@ -65,20 +65,31 @@ class HorsePanel extends JPanel implements ActionListener {
     int horseLane;
     private Horse theHorse;
     private Race race;
+    String breed;
 
-    public HorsePanel(int y, int horseLane, Horse theHorse, Race race) {
+    public HorsePanel(int y, int horseLane, Horse theHorse, Race race, String breed) {
         this.theHorse = theHorse;
         this.race = race;
         this.y = y;
         this.horseLane = horseLane;
+        this.breed = breed;
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+        loadImages(breed);
         background = new ImageIcon("background1600.png").getImage();
         backgroundWithSun = new ImageIcon("backgroundWithSun1600.png").getImage();
-        imageArray = new ImageIcon[6];
-        for (int i = 0; i < imageArray.length; i++) {
-            imageArray[i] = new ImageIcon("frame" + i + ".png");
-        }
         timer = new Timer(delay, this);
+    }
+    private void loadImages(String breed) {
+        imageArray = new ImageIcon[6];
+        for (int i = 0; i < imageArray.length - 1; i++) {
+            imageArray[i] = new ImageIcon(breed + i + ".png");
+        }
+        imageArray[5] = new ImageIcon(breed + "Fallen.png");
+    }
+    public void changeHorseStyle(String newStyle) {
+        this.breed = newStyle;
+        loadImages(newStyle);
+        repaint();
     }
     public Race getRace(){
         return this.race;
@@ -170,10 +181,21 @@ class settingsPanel extends JPanel {
     private JRadioButton length1000, length1300, length1600;
     private ButtonGroup lengthGroup;
     private JButton startButton;
+    private JComboBox<String> horse1Breed, horse2Breed, horse3Breed;
     
     public settingsPanel(HorsePanel... horses) {
         this.setPreferredSize(new Dimension(1600, 200));
+        this.setLayout(new FlowLayout(3, 1, 1));
         startButton = new JButton("Start");
+        String[] breeds = {"Palomino", "Arabian", "Grullo"};
+
+        horse1Breed = new JComboBox<>(breeds);
+        horse2Breed = new JComboBox<>(breeds);
+        horse3Breed = new JComboBox<>(breeds);
+
+        horse1Breed.setSelectedIndex(0);
+        horse2Breed.setSelectedIndex(1);
+        horse3Breed.setSelectedIndex(2);
 
         length1000 = new JRadioButton("1000 meters");
         length1300 = new JRadioButton("1300 meters");
@@ -188,9 +210,18 @@ class settingsPanel extends JPanel {
         add(length1000);
         add(length1300);
         add(length1600);
+        add(new JLabel("Horse 1 Style:"));
+        add(horse1Breed);
+        add(new JLabel("Horse 2 Style:"));
+        add(horse2Breed);
+        add(new JLabel("Horse 3 Style:"));
+        add(horse3Breed);
         add(startButton);
     
         startButton.addActionListener(e -> {
+            horses[0].changeHorseStyle((String)horse1Breed.getSelectedItem());
+            horses[1].changeHorseStyle((String)horse2Breed.getSelectedItem());
+            horses[2].changeHorseStyle((String)horse3Breed.getSelectedItem());
             int selectedLength = getSelectedTrackLength();
             for (HorsePanel horsePanel : horses) {
                 horsePanel.getRace().setRaceLength(selectedLength);
