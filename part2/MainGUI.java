@@ -72,8 +72,8 @@ class HorsePanel extends JPanel implements ActionListener {
         this.y = y;
         this.horseLane = horseLane;
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-        background = new ImageIcon("background.png").getImage();
-        backgroundWithSun = new ImageIcon("backgroundWithSun.png").getImage();
+        background = new ImageIcon("background1600.png").getImage();
+        backgroundWithSun = new ImageIcon("backgroundWithSun1600.png").getImage();
         imageArray = new ImageIcon[6];
         for (int i = 0; i < imageArray.length; i++) {
             imageArray[i] = new ImageIcon("frame" + i + ".png");
