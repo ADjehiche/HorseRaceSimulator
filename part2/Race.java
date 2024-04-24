@@ -30,8 +30,12 @@ public class Race
         lane2Horse = null;
         lane3Horse = null;
     }
-
-
+    public void setRaceLength(int distance){
+        raceLength = distance;
+    }
+    public int getRaceLength(){
+        return raceLength;
+    }
     /**
      * Adds a horse to the race in a given lane
      * 

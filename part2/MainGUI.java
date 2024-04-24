@@ -22,9 +22,9 @@ public class MainGUI
         Horse horse2 = new Horse('2', "Rafs", 0.5);
         Horse horse3 = new Horse('3', "Zans", 0.5);
         
-        panel = new HorsePanel(1,1, horse1);
-        panel2 = new HorsePanel(1,2, horse2);
-        panel3 = new HorsePanel(1,3, horse3);
+        panel = new HorsePanel(1,1, horse1, race);
+        panel2 = new HorsePanel(1,2, horse2, race);
+        panel3 = new HorsePanel(1,3, horse3, race);
 
         race.addHorse(horse1, 1);
         race.addHorse(horse2, 2);
@@ -52,7 +52,7 @@ public class MainGUI
     }
 }
 class HorsePanel extends JPanel implements ActionListener {
-    final int PANEL_WIDTH = 1600;
+    int PANEL_WIDTH = 1600;
     final int PANEL_HEIGHT = 500;
     private ImageIcon[] imageArray;
     private Image background;
@@ -61,12 +61,14 @@ class HorsePanel extends JPanel implements ActionListener {
     private int delay = 175, totalFrames = 5, currentFrame = 0;
     int xVelocity = 4;
     int x = 0;
-    int y ;
+    int y;
     int horseLane;
     private Horse theHorse;
+    private Race race;
 
-    public HorsePanel(int y, int horseLane, Horse theHorse) {
+    public HorsePanel(int y, int horseLane, Horse theHorse, Race race) {
         this.theHorse = theHorse;
+        this.race = race;
         this.y = y;
         this.horseLane = horseLane;
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
@@ -78,7 +80,18 @@ class HorsePanel extends JPanel implements ActionListener {
         }
         timer = new Timer(delay, this);
     }
-
+    public Race getRace(){
+        return this.race;
+    }
+    public int getY(){
+        return this.y;
+    }
+    public void setPanelWidth(int width) {
+        this.PANEL_WIDTH = width;
+        this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+        this.revalidate();
+    }
+    
     public void startAnimation() {
         timer.start();
         this.theHorse.goBackToStart();
@@ -93,9 +106,9 @@ class HorsePanel extends JPanel implements ActionListener {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if(horseLane == 1){
-            g.drawImage(backgroundWithSun, 0, this.y, this.getWidth(), this.getHeight(), this);
+            g.drawImage(backgroundWithSun, 0, getY(), this.getWidth(), this.getHeight(), this);
         }else{
-        g.drawImage(background, 0, this.y, this.getWidth(), this.getHeight(), this);
+        g.drawImage(background, 0, getY(), this.getWidth(), this.getHeight(), this);
         }
         if (imageArray[currentFrame] != null || currentFrame != 5) {
             imageArray[currentFrame].paintIcon(this, g, x, 0);
@@ -147,17 +160,45 @@ class HorsePanel extends JPanel implements ActionListener {
 
 
 class settingsPanel extends JPanel {
+    private JRadioButton length1000, length1300, length1600;
+    private ButtonGroup lengthGroup;
+    private JButton startButton;
     
     public settingsPanel(HorsePanel... horses) {
-        this.setPreferredSize(new Dimension(1600, 100));
-        JButton startButton = new JButton("Start");
+        this.setPreferredSize(new Dimension(1600, 200));
+        startButton = new JButton("Start");
+
+        length1000 = new JRadioButton("1000 meters");
+        length1300 = new JRadioButton("1300 meters");
+        length1600 = new JRadioButton("1600 meters");
+        length1600.setSelected(true); 
+
+        lengthGroup = new ButtonGroup();
+        lengthGroup.add(length1000);
+        lengthGroup.add(length1300);
+        lengthGroup.add(length1600);
+
+        add(length1000);
+        add(length1300);
+        add(length1600);
+        add(startButton);
     
         startButton.addActionListener(e -> {
-            for (HorsePanel horse : horses) {
-                horse.startAnimation();
+            int selectedLength = getSelectedTrackLength();
+            for (HorsePanel horsePanel : horses) {
+                horsePanel.getRace().setRaceLength(selectedLength);
+                horsePanel.setPanelWidth(selectedLength);
+                horsePanel.startAnimation();
             }
         });
-    
-        this.add(startButton);
     }
+    private int getSelectedTrackLength() {
+        if (length1300.isSelected()) {
+            return 1300;
+        } else if (length1000.isSelected()) {
+            return 1000;
+        } else {
+            return 1600;
+        }
     }
+}
