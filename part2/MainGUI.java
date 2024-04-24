@@ -16,9 +16,23 @@ public class MainGUI
     settingsPanel controlPanel;
 
     public MyFrame() {
-        panel = new HorsePanel(1,1);
-        panel2 = new HorsePanel(1,2);
-        panel3 = new HorsePanel(1,3);
+        Race race = new Race(15);
+        Horse horse1 = new Horse('1', "John", 0.5);
+        Horse horse2 = new Horse('2', "Rafs", 0.5);
+        Horse horse3 = new Horse('3', "Zans", 0.5);
+        
+        panel = new HorsePanel(1,1, horse1);
+        panel2 = new HorsePanel(1,2, horse2);
+        panel3 = new HorsePanel(1,3, horse3);
+
+        race.addHorse(horse1, 1);
+        race.addHorse(horse2, 2);
+        race.addHorse(horse3, 3);
+
+        horse1.goBackToStart();
+        horse2.goBackToStart();
+        horse3.goBackToStart();
+
         controlPanel = new settingsPanel(panel, panel2, panel3);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,8 +61,10 @@ class HorsePanel extends JPanel implements ActionListener {
     int x = 0;
     int y ;
     int horseLane;
+    private Horse theHorse;
 
-    public HorsePanel(int y, int horseLane) {
+    public HorsePanel(int y, int horseLane, Horse theHorse) {
+        this.theHorse = theHorse;
         this.y = y;
         this.horseLane = horseLane;
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
@@ -81,10 +97,32 @@ class HorsePanel extends JPanel implements ActionListener {
             imageArray[currentFrame].paintIcon(this, g, x, 0);
         }
     }
+    private void moveHorse()
+    {
+        
+        if  (!theHorse.hasFallen())
+        {
+            if (Math.random() < theHorse.getConfidence())
+            {
+               theHorse.moveForward();
+            }
+            
+            if (Math.random() < (0.1*theHorse.getConfidence()*theHorse.getConfidence()))
+            {
+                theHorse.fall();
+                if(theHorse.getConfidence()>0.0){
+                    theHorse.setConfidence(theHorse.getConfidence()-0.1);
+                }else{
+                    theHorse.setConfidence(0.1);
+                }
+            }
+        }
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        x += xVelocity;
+        moveHorse();
+        x = x + theHorse.getDistanceTravelled();
         if (x >= PANEL_WIDTH - imageArray[0].getIconWidth()) {
             x = 0;
             currentFrame = 4;

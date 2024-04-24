@@ -63,7 +63,7 @@ public class Horse
 
     public void moveForward()
     {
-        this.distanceTravelled += 1;
+        this.distanceTravelled += 4;
     }
 
     public void setConfidence(double newConfidence)
