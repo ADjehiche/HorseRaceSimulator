@@ -161,7 +161,9 @@ class HorsePanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        race.RaceFinished(false);
+        if(x == 0){
+            race.RaceFinished(false);
+        }
         if(theHorse.hasFallen()==false){
         moveHorse();
         x = x + theHorse.getDistanceTravelled();
