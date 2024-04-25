@@ -59,7 +59,6 @@ class HorsePanel extends JPanel implements ActionListener {
     private Image backgroundWithSun;
     Timer timer;
     private int delay = 175, totalFrames = 5, currentFrame = 0;
-    int xVelocity = 4;
     int x = 0;
     int y;
     int horseLane;
@@ -200,7 +199,7 @@ class controlPanel extends JPanel {
     public controlPanel(HorsePanel... horses) {
         this.setPreferredSize(new Dimension(1600, 200));
         startButton = new JButton("Start");
-        String[] breeds = {"Palomino", "Arabian", "Grullo"};
+        String[] breeds = {"Palomino", "Arabian", "Grullo", "American Paint"};
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
