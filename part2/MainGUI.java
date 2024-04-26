@@ -5,18 +5,18 @@ import java.awt.event.*;
 public class MainGUI
 {
     public static void main(String[] args){
-        new MyFrame();
+        new HorseRaceFrame();
     }
 }
 
- class MyFrame extends JFrame {
+ class HorseRaceFrame extends JFrame {
     HorsePanel panel;
     HorsePanel panel2;
     HorsePanel panel3;
     boolean finished = false;
     controlPanel controlPanel;
 
-    public MyFrame() {
+    public HorseRaceFrame() {
         Race race = new Race(15);
         Horse horse1 = new Horse('1', "John", 0.5);
         Horse horse2 = new Horse('2', "Rafs", 0.5);
