@@ -77,7 +77,7 @@ public class Race
      * then repeatedly moved forward until the 
      * race is finished
      */
-    public void startRaceGui(){
+    public void startRaceGUI(){
         MainGUI.main(null);
     }
     public void startRace()

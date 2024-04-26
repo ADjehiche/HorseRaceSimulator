@@ -45,10 +45,6 @@ public class MainGUI
         pack();
         setVisible(true);
 
-        horse1.goBackToStart();
-        horse2.goBackToStart();
-        horse3.goBackToStart();
-
     }
 }
 class HorsePanel extends JPanel implements ActionListener {
@@ -148,6 +144,7 @@ class HorsePanel extends JPanel implements ActionListener {
             if (Math.random() < theHorse.getConfidence())
             {
                theHorse.moveForwardGUI();
+               theHorse.SetTotalDistanceTravelled(theHorse.getDistanceTravelled());
             }
             
             if (Math.random() < (0.1*theHorse.getConfidence()*theHorse.getConfidence()))
@@ -226,9 +223,9 @@ class controlPanel extends JPanel {
         horse2Breed.setSelectedIndex(1);
         horse3Breed.setSelectedIndex(2);
 
-        length1000 = new JRadioButton("1000 meters");
-        length1300 = new JRadioButton("1300 meters");
-        length1600 = new JRadioButton("1600 meters");
+        length1000 = new JRadioButton("400 meters");
+        length1300 = new JRadioButton("500 meters");
+        length1600 = new JRadioButton("600 meters");
         length1600.setSelected(true); 
 
         lengthGroup = new ButtonGroup();
@@ -270,9 +267,9 @@ class controlPanel extends JPanel {
         }
     }
     private void updateHorseStats(HorsePanel... horses) {
-        horse1Stats.setText(horses[0].getHorse().getName() + " Confidence: " + horses[0].getHorse().getConfidence());
-        horse2Stats.setText(horses[1].getHorse().getName() + " Confidence: " + horses[1].getHorse().getConfidence());
-        horse3Stats.setText(horses[2].getHorse().getName() + " Confidence: " + horses[2].getHorse().getConfidence());
+        horse1Stats.setText(horses[0].getHorse().getName() + " - | Confidence: " + horses[0].getHorse().getConfidence() + " | Distance Travelled: " + horses[0].getHorse().getTotalDistanceTravelled());
+        horse2Stats.setText(horses[1].getHorse().getName() + " - | Confidence: " + horses[1].getHorse().getConfidence() + " | Distance Travelled: " + horses[1].getHorse().getTotalDistanceTravelled());
+        horse3Stats.setText(horses[2].getHorse().getName() + " - | Confidence: " + horses[2].getHorse().getConfidence() + " | Distance Travelled: " + horses[2].getHorse().getTotalDistanceTravelled());
     }
     private void addComponent(Component component, GridBagConstraints gbc) {
         this.add(component, gbc);
