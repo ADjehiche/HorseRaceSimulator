@@ -63,6 +63,9 @@ public class Horse
 
     public void moveForward()
     {
+        this.distanceTravelled += 1;
+    }
+    public void moveForwardGUI(){
         this.distanceTravelled += 4;
     }
 

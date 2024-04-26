@@ -22,9 +22,9 @@ public class MainGUI
         Horse horse2 = new Horse('2', "Rafs", 0.5);
         Horse horse3 = new Horse('3', "Zans", 0.5);
         
-        panel = new HorsePanel(1,1, horse1, race, "Pollimino");
-        panel2 = new HorsePanel(1,2, horse2, race, "Arabian");
-        panel3 = new HorsePanel(1,3, horse3, race , "Grullo");
+        panel = new HorsePanel(1,1, horse1, race, "Palomino");
+        panel2 = new HorsePanel(216,2, horse2, race, "Arabian");
+        panel3 = new HorsePanel(432,3, horse3, race , "Grullo");
 
         race.addHorse(horse1, 1);
         race.addHorse(horse2, 2);
@@ -74,6 +74,7 @@ class HorsePanel extends JPanel implements ActionListener {
         this.breed = breed;
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         loadImages(breed);
+        repaint();
         background = new ImageIcon("background1600.png").getImage();
         backgroundWithSun = new ImageIcon("backgroundWithSun1600.png").getImage();
         timer = new Timer(delay, this);
@@ -111,12 +112,13 @@ class HorsePanel extends JPanel implements ActionListener {
         getGraphics().drawImage(background, 0, getY(), this.getWidth(), this.getHeight(), this);
         }
         this.revalidate();
+        repaint();
     }
     
     public void startAnimation() {
         timer.start();
         this.theHorse.goBackToStart();
-        x =0;
+        x = 0;
     }
 
     public void stopAnimation() {
@@ -127,10 +129,11 @@ class HorsePanel extends JPanel implements ActionListener {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if(horseLane == 1){
-            g.drawImage(backgroundWithSun, 0, getY(), this.getWidth(), this.getHeight(), this);
+            g.drawImage(backgroundWithSun, 0, 0, this.getWidth(), this.getHeight(), this);
         }else{
-        g.drawImage(background, 0, getY(), this.getWidth(), this.getHeight(), this);
+        g.drawImage(background, 0, 2, this.getWidth(), this.getHeight(), this);
         }
+        validate();
         if (imageArray[currentFrame] != null || currentFrame != 5) {
             imageArray[currentFrame].paintIcon(this, g, x, 0);
         }else if(theHorse.hasFallen){
@@ -144,7 +147,7 @@ class HorsePanel extends JPanel implements ActionListener {
         {
             if (Math.random() < theHorse.getConfidence())
             {
-               theHorse.moveForward();
+               theHorse.moveForwardGUI();
             }
             
             if (Math.random() < (0.1*theHorse.getConfidence()*theHorse.getConfidence()))
@@ -236,11 +239,11 @@ class controlPanel extends JPanel {
         add(length1000);
         add(length1300);
         add(length1600);
-        add(new JLabel("Horse 1 Style:"));
+        add(new JLabel("Horse 1 Breed:"));
         add(horse1Breed);
-        add(new JLabel("Horse 2 Style:"));
+        add(new JLabel("Horse 2 Breed:"));
         add(horse2Breed);
-        add(new JLabel("Horse 3 Style:"));
+        add(new JLabel("Horse 3 Breed:"));
         add(horse3Breed);
         add(startButton);
     
