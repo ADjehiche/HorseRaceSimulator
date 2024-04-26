@@ -15,7 +15,6 @@ public class Horse
     int distanceTravelled;
     boolean hasFallen;
     int totalDistanceTravelled;
-
     public Horse(char horseSymbol, String horseName, double horseConfidence)
     {
         this.horseSymbol = horseSymbol;

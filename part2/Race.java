@@ -17,6 +17,7 @@ public class Race
     private Horse lane3Horse;
     private boolean finished;
 
+
     /**
      * Constructor for objects of class Race
      * Initially there are no horses in the lanes
@@ -69,7 +70,6 @@ public class Race
             System.out.println("Cannot add horse to lane " + laneNumber + " because there is no such lane");
         }
     }
-
     
     /**
      * Start the race

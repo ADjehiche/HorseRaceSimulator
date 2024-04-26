@@ -30,6 +30,10 @@ public class Race
         lane2Horse = null;
         lane3Horse = null;
     }
+    public static void main(String[] args){
+        Race race = new Race(15);
+        race.startRace();
+    }
 
 
     /**
@@ -57,6 +61,11 @@ public class Race
             System.out.println("Cannot add horse to lane " + laneNumber + " because there is no such lane");
         }
     }
+    public static String nameHorse(String number, Scanner input){
+        System.out.println("Enter the " +number+ " horse's name: ");
+        String name = input.nextLine();
+        return name;
+    }
     
     /**
      * Start the race
@@ -66,6 +75,17 @@ public class Race
      */
     public void startRace()
     {
+        System.out.println("Welcome to the horse race game!");
+        Scanner reader = new Scanner(System.in);
+        String horse1Name = nameHorse("First", reader);
+        Horse horse1 = new Horse(horse1Name.charAt(0), horse1Name, 0.5);
+        String horse2Name = nameHorse("Second", reader);
+        Horse horse2 = new Horse(horse2Name.charAt(0), horse2Name, 0.5);
+        String horse3Name = nameHorse("Third", reader);
+        Horse horse3 = new Horse(horse3Name.charAt(0), horse3Name, 0.5);
+        addHorse(horse1,1);
+        addHorse(horse2,2);
+        addHorse(horse3,3);
         String raceAgain = "y";
         Scanner input = new Scanner(System.in);
         while(raceAgain.equals("y")){
@@ -129,6 +149,7 @@ public class Race
                 raceAgain = input.nextLine();
             }
             if(raceAgain.equals("n")){
+                System.out.println("Thanks for playing!");
                 input.close();
             }
         }
