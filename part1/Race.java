@@ -30,6 +30,10 @@ public class Race
         lane2Horse = null;
         lane3Horse = null;
     }
+    public static void main(String[] args){
+        Race race = new Race(15);
+        race.startRace();
+    }
 
 
     /**
