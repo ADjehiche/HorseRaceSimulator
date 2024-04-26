@@ -15,6 +15,8 @@ public class Race
     private Horse lane1Horse;
     private Horse lane2Horse;
     private Horse lane3Horse;
+    private boolean finished;
+
 
     /**
      * Constructor for objects of class Race
@@ -29,9 +31,20 @@ public class Race
         lane1Horse = null;
         lane2Horse = null;
         lane3Horse = null;
+        finished = false;
     }
-
-
+    public void setRaceLength(int distance){
+        raceLength = distance;
+    }
+    public int getRaceLength(){
+        return raceLength;
+    }
+    public void RaceFinished(boolean finished){
+        this.finished= finished;
+    }
+    public boolean isFinished(){
+        return this.finished;
+    }
     /**
      * Adds a horse to the race in a given lane
      * 
@@ -64,6 +77,9 @@ public class Race
      * then repeatedly moved forward until the 
      * race is finished
      */
+    public void startRaceGUI(){
+        MainGUI.main(null);
+    }
     public void startRace()
     {
         String raceAgain = "y";

@@ -14,7 +14,7 @@ public class Horse
     double horseConfidence;
     int distanceTravelled;
     boolean hasFallen;
-
+    int totalDistanceTravelled;
     public Horse(char horseSymbol, String horseName, double horseConfidence)
     {
         this.horseSymbol = horseSymbol;
@@ -64,6 +64,15 @@ public class Horse
     public void moveForward()
     {
         this.distanceTravelled += 1;
+    }
+    public void moveForwardGUI(){
+        this.distanceTravelled += 4;
+    }
+    public void SetTotalDistanceTravelled(int distance){
+        this.totalDistanceTravelled += distance;
+    }
+    public int getTotalDistanceTravelled(){
+        return this.totalDistanceTravelled;
     }
 
     public void setConfidence(double newConfidence)
