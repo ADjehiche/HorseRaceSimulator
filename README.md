@@ -13,7 +13,7 @@ A simple Java application simulating a horse race using terminal display or Swin
 
 ## Description
 This project is a Java application that simulates a horse race using a terminal representation.
-This project is a Java application that simulates a horse race using Swing for the graphical user interface. 
+This project is also a Java application that simulates a horse race using Swing for the graphical user interface. 
 It utilizes object-oriented programming principles to represent horses, races, and the race track. 
 The application allows users to start the race, change horse breeds, and track each horse's performance during the race.
 
